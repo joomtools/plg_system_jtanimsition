@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+<fields name="params">
+    <fieldset name="jtanimsition">
+
+        <field name="note_anim_in"
+               type="note"
+               class="text-info"
+               label="PLG_SYSTEM_JTANIMSITION_NOTE_IN_LABEL" />
+
+        <field name="menu_anim_active_in"
+               type="radio"
+               class="btn-group"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_ACTIVE_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_ACTIVE_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <option value="1">JON</option>
+            <option value="0">JOFF</option>
+        </field>
+        <field name="menu_anim_type_in"
+               type="groupedlist"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_TYPE_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_TYPE_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <group label="Fade">
+                <option value="fade">Fade</option>
+                <option value="fade-up">Fade up</option>
+                <option value="fade-right">Fade right</option>
+                <option value="fade-down">Fade down</option>
+                <option value="fade-left">Fade left</option>
+            </group>
+            <group label="Rotate">
+                <option value="rotate">Rotate</option>
+            </group>
+            <group label="Flip">
+                <option value="flip-x">Flip X</option>
+                <option value="flip-y">Flip Y</option>
+            </group>
+            <group label="Zoom">
+                <option value="zoom">Zoom</option>
+            </group>
+            <group label="Overlay">
+                <option value="overlay-top">Overlay top</option>
+                <option value="overlay-right">Overlay right</option>
+                <option value="overlay-bottom">Overlay bottom</option>
+                <option value="overlay-left">Overlay left</option>
+            </group>
+        </field>
+        <field name="menu_anim_weight_in"
+               type="list"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_WEIGHT_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_WEIGHT_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <option value="0">PLG_SYSTEM_JTANIMSITION_WEIGHT_NORMAL</option>
+            <option value="sm">PLG_SYSTEM_JTANIMSITION_WEIGHT_SMALL</option>
+            <option value="lg">PLG_SYSTEM_JTANIMSITION_WEIGHT_LARGE</option>
+        </field>
+        <field name="menu_anim_dur_in"
+               type="text"
+               class="input-small"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_DUR_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_DUR_DESC" />
+
+        <field type="spacer" name="myspacer" label="" />
+
+        <field name="note_anim_out"
+               type="note"
+               class="text-info"
+               label="PLG_SYSTEM_JTANIMSITION_NOTE_OUT_LABEL" />
+
+        <field name="menu_anim_active_out"
+               type="radio"
+               class="btn-group"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_ACTIVE_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_ACTIVE_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <option value="1">JON</option>
+            <option value="0">JOFF</option>
+        </field>
+        <field name="menu_anim_type_out"
+               type="groupedlist"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_TYPE_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_TYPE_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <group label="Fade">
+                <option value="fade">Fade</option>
+                <option value="fade-up">Fade up</option>
+                <option value="fade-right">Fade right</option>
+                <option value="fade-down">Fade down</option>
+                <option value="fade-left">Fade left</option>
+            </group>
+            <group label="Rotate">
+                <option value="rotate">Rotate</option>
+            </group>
+            <group label="Flip">
+                <option value="flip-x">Flip X</option>
+                <option value="flip-y">Flip Y</option>
+            </group>
+            <group label="Zoom">
+                <option value="zoom">Zoom</option>
+            </group>
+            <group label="Overlay">
+                <option value="overlay-top">Overlay top</option>
+                <option value="overlay-right">Overlay right</option>
+                <option value="overlay-bottom">Overlay bottom</option>
+                <option value="overlay-left">Overlay left</option>
+            </group>
+        </field>
+        <field name="menu_anim_weight_out"
+               type="list"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_WEIGHT_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_WEIGHT_DESC">
+            <option value="-1">JGLOBAL_USE_GLOBAL</option>
+            <option value="0">PLG_SYSTEM_JTANIMSITION_WEIGHT_NORMAL</option>
+            <option value="sm">PLG_SYSTEM_JTANIMSITION_WEIGHT_SMALL</option>
+            <option value="lg">PLG_SYSTEM_JTANIMSITION_WEIGHT_LARGE</option>
+        </field>
+        <field name="menu_anim_dur_out"
+               type="text"
+               class="input-small"
+               default="-1"
+               label="PLG_SYSTEM_JTANIMSITION_DUR_LABEL"
+               description="PLG_SYSTEM_JTANIMSITION_DUR_DESC" />
+
+    </fieldset>
+</fields>
+</form>

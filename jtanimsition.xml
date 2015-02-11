@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_JTANIMSITION</name>
+    <author>Guido De Gobbis</author>
+    <creationDate>22 Jan 2015</creationDate>
+    <copyright>(C) JoomTools.de. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
+    <authorEmail>guido.de.gobbis@joomtools.de</authorEmail>
+    <authorUrl>www.joomtools.de</authorUrl>
+    <version>1.0.1</version>
+    <description>PLG_SYSTEM_JTANIMSITION_XML_DESCRIPTION</description>
+    <files>
+        <file plugin="jtanimsition">jtanimsition.php</file>
+        <filename>jtanimsition.script.php</filename>
+        <folder>language</folder>
+        <folder>params</folder>
+        <folder>library</folder>
+    </files>
+
+<!--
+    <languages>
+        <language tag="en-GB">en-GB.plg_system_jtanimsition.ini</language>
+        <language tag="en-GB">en-GB.plg_system_jtanimsition.sys.ini</language>
+        <language tag="de-DE">de-DE.plg_system_jtanimsition.ini</language>
+        <language tag="de-DE">de-DE.plg_system_jtanimsition.sys.ini</language>
+    </languages>
+-->
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+
+                <field name="anim_container"
+                       type="radio"
+                       class="btn-group"
+                       default="1"
+                       label="PLG_SYSTEM_JTANIMSITION_CONTAINER_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_CONTAINER_DESC">
+                    <option value="1">PLG_SYSTEM_JTANIMSITION_CONTAINER_BODY</option>
+                    <option value="2">PLG_SYSTEM_JTANIMSITION_CONTAINER_COMPONENT</option>
+                </field>
+
+                <field name="note_anim_in"
+                       type="note"
+                       class="text-info"
+                       label="PLG_SYSTEM_JTANIMSITION_NOTE_IN_LABEL" />
+
+                <field name="anim_active_in"
+                       type="radio"
+                       class="btn-group"
+                       default="1"
+                       label="PLG_SYSTEM_JTANIMSITION_ACTIVE_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_ACTIVE_DESC">
+                    <option value="1">JON</option>
+                    <option value="0">JOFF</option>
+                </field>
+                <field name="anim_type_in"
+                       type="groupedlist"
+                       default="fade"
+                       label="PLG_SYSTEM_JTANIMSITION_TYPE_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_TYPE_DESC">
+                    <group label="Fade">
+                        <option value="fade">Fade</option>
+                        <option value="fade-up">Fade up</option>
+                        <option value="fade-right">Fade right</option>
+                        <option value="fade-down">Fade down</option>
+                        <option value="fade-left">Fade left</option>
+                    </group>
+                    <group label="Rotate">
+                        <option value="rotate">Rotate</option>
+                    </group>
+                    <group label="Flip">
+                        <option value="flip-x">Flip X</option>
+                        <option value="flip-y">Flip Y</option>
+                    </group>
+                    <group label="Zoom">
+                        <option value="zoom">Zoom</option>
+                    </group>
+                    <group label="Overlay">
+                        <option value="overlay-top">Overlay top</option>
+                        <option value="overlay-right">Overlay right</option>
+                        <option value="overlay-bottom">Overlay bottom</option>
+                        <option value="overlay-left">Overlay left</option>
+                    </group>
+                </field>
+                <field name="anim_weight_in"
+                       type="list"
+                       default="0"
+                       label="PLG_SYSTEM_JTANIMSITION_WEIGHT_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_WEIGHT_DESC">
+                    <option value="0">PLG_SYSTEM_JTANIMSITION_WEIGHT_NORMAL</option>
+                    <option value="sm">PLG_SYSTEM_JTANIMSITION_WEIGHT_SMALL</option>
+                    <option value="lg">PLG_SYSTEM_JTANIMSITION_WEIGHT_LARGE</option>
+                </field>
+                <field name="anim_dur_in"
+                       type="text"
+                       class="input-small"
+                       default="1000"
+                       label="PLG_SYSTEM_JTANIMSITION_DUR_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_DUR_DESC" />
+
+                <field type="spacer" name="myspacer" label="" />
+
+                <field name="note_anim_out"
+                       type="note"
+                       class="text-info"
+                       label="PLG_SYSTEM_JTANIMSITION_NOTE_OUT_LABEL" />
+
+                <field name="anim_active_out"
+                       type="radio"
+                       class="btn-group"
+                       default="1"
+                       label="PLG_SYSTEM_JTANIMSITION_ACTIVE_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_ACTIVE_DESC">
+                    <option value="1">JON</option>
+                    <option value="0">JOFF</option>
+                </field>
+                <field name="anim_type_out"
+                       type="groupedlist"
+                       default="fade"
+                       label="PLG_SYSTEM_JTANIMSITION_TYPE_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_TYPE_DESC">
+                    <group label="Fade">
+                        <option value="fade">Fade</option>
+                        <option value="fade-up">Fade up</option>
+                        <option value="fade-right">Fade right</option>
+                        <option value="fade-down">Fade down</option>
+                        <option value="fade-left">Fade left</option>
+                    </group>
+                    <group label="Rotate">
+                        <option value="rotate">Rotate</option>
+                    </group>
+                    <group label="Flip">
+                        <option value="flip-x">Flip X</option>
+                        <option value="flip-y">Flip Y</option>
+                    </group>
+                    <group label="Zoom">
+                        <option value="zoom">Zoom</option>
+                    </group>
+                    <group label="Overlay">
+                        <option value="overlay-top">Overlay top</option>
+                        <option value="overlay-right">Overlay right</option>
+                        <option value="overlay-bottom">Overlay bottom</option>
+                        <option value="overlay-left">Overlay left</option>
+                    </group>
+                </field>
+                <field name="anim_weight_out"
+                       type="list"
+                       default="0"
+                       label="PLG_SYSTEM_JTANIMSITION_WEIGHT_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_WEIGHT_DESC">
+                    <option value="0">PLG_SYSTEM_JTANIMSITION_WEIGHT_NORMAL</option>
+                    <option value="sm">PLG_SYSTEM_JTANIMSITION_WEIGHT_SMALL</option>
+                    <option value="lg">PLG_SYSTEM_JTANIMSITION_WEIGHT_LARGE</option>
+                </field>
+                <field name="anim_dur_out"
+                       type="text"
+                       class="input-small"
+                       default="1000"
+                       label="PLG_SYSTEM_JTANIMSITION_DUR_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_DUR_DESC" />
+
+                <field type="spacer" name="myspacer" hr="true" />
+
+                <field name="debug"
+                       type="radio"
+                       class="btn-group"
+                       default="0"
+                       label="PLG_SYSTEM_JTANIMSITION_DEBUG_LABEL"
+                       description="PLG_SYSTEM_JTANIMSITION_DEBUG_DESCRIPTION">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>
