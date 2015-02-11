@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.1
+ * @version 1.0.2
  * @package JT - Animsition
  * @copyright 2014 Guido De Gobbis - JoomTools
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.1
+ * @version 1.0.2
  * @package JT - Animsition
  * @copyright 2014 Guido De Gobbis - JoomTools
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -16,9 +16,9 @@ class plgSystemJTAnimsition extends JPlugin
 
 	public function __construct(& $subject, $config)
 	{
-		if(version_compare(JVERSION, '3.0', 'ge')){
+		if(version_compare(JVERSION, '3', 'ge')){
 			// Class overwrites
-			JLoader::register('JDocumentHTML', JPATH_PLUGINS . '/system/jtanimsition/library/html.php');
+			JLoader::register('JDocumentHTML', JPATH_ROOT. '/media/jtlibraries/html.php');
 		}
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
@@ -38,6 +38,11 @@ class plgSystemJTAnimsition extends JPlugin
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
 		if($FB) $FB->info($this->params,'$this->params');
 
+		$document = JFactory::getDocument();
+		$app = JFactory::getApplication();
+		if($FB) $FB->info($document,'$document');
+		if($FB) $FB->info($app,'$app');
+
 		$globalParams['in']['active'] = $this->params->get('anim_active_in');
 		$globalParams['in']['type'] = $this->params->get('anim_type_in');
 		$globalParams['in']['weight'] = $this->params->get('anim_weight_in');
@@ -51,6 +56,14 @@ class plgSystemJTAnimsition extends JPlugin
 		$menuItems = &JFactory::getApplication()->getMenu()->getItems('access', '1');
 
 		if($FB) $FB->info($menuItems,'$menuItems');
+
+		$this->paramsSet['container'] = $this->params->get('anim_container', 1);
+		$this->paramsSet['positions'] = array();
+		if($this->params->get('anim_container', 1) == 2) {
+			$animPositions = json_decode($this->params->get('anim_pos_repeatable', ''));
+			$this->paramsSet['positions'] = $animPositions->anim_position;
+		}
+		if($FB) $FB->info($this->paramsSet['positions'],'$this->paramsSet[positions]');
 
 		foreach($menuItems as &$item)
 		{
@@ -84,7 +97,6 @@ class plgSystemJTAnimsition extends JPlugin
 				if($FB) $FB->info('item['.$item->id.']->class->set->ok');
 
 				$this->paramsSet['item['.$item->id.']'] = $setAnimsition;
-				$this->paramsSet['item['.$item->id.']']['container'] = $this->params->get('anim_container', 1);
 			}
 
 			if($FB) $FB->groupEnd();
@@ -130,44 +142,45 @@ class plgSystemJTAnimsition extends JPlugin
 		$FB = $this->FB;
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
 
-		if($FB) $FB->info($activeLinkId,'$activeLinkId');
-		if($FB) $FB->info($paramsSet,'$paramsSet');
-
 		$document = JFactory::getDocument();
 		if($FB) $FB->info($document,'$document');
 
 		$liveSite = rtrim(JURI::base(true), '/');
 		$plgName = $this->get('_name');
 		$plgType = $this->get('_type');
-		$pathToLibs = $liveSite.'/plugins/'.$plgType.'/'.$plgName.'/library';
-		$dataAnimsitionIn = $paramsSet['in'] ? ' data-animsition-in="'.$paramsSet['in']['type'].'" data-animsition-in-duration="'.$paramsSet['in']['dur'].'"' : '';
-		$dataAnimsitionOut = $paramsSet['out'] ? ' data-animsition-out="'.$paramsSet['out']['type'].'" data-animsition-out-duration="'.$paramsSet['out']['dur'].'"' : '';
+		$pathToLibs = $liveSite.'/plugins/'.$plgType.'/'.$plgName.'/assets';
 
 		if($FB) $FB->info($this,'$this');
 		if($FB) $FB->info($pathToLibs,'$pathToLibs');
 
-		if(substr($paramsSet['in']['type'], 0, 7) == 'overlay'
-			|| substr($paramsSet['out']['type'], 0, 7) == 'overlay')
-		{
-			$animOverlay = ' data-animsition-overlay="true"';
-		}
-		else {
-			$animOverlay = '';
+		$animAttributes = $this->_getAnimAttributes();
+
+		$openAnimTag = '<div'.$animAttributes.'>';
+		$closeAnimTag = '</div>';
+
+		if(version_compare(JVERSION, '3.0', 'ge')){
+			$template = $document->getTemplateBuffer();
+		} else {
+			$template = $document->get('_template');
 		}
 
-		$openAnimTag = '<div class="animsition"'.$animOverlay.$dataAnimsitionIn.$dataAnimsitionOut.'>';
-		$closeAnimTag = '</div>';
+		$positions = null;
+
+		if (preg_match_all('#<jdoc:include\stype="modules"\sname="([^"]+)"(.*)?\s?\/>#iU', $template, $matches))
+		{
+			if($FB) $FB->info($matches,'$matches');
+			foreach($matches[1] as $key=>$match)
+			{
+				if(in_array($match, $this->paramsSet['positions']))
+				{
+					$positions[] = $matches[0][$key];
+				}
+			}
+		}
+
 
 		if($paramsSet['container'] == 1)
 		{
-			if(version_compare(JVERSION, '3.0', 'ge')){
-				$template = $document->getTemplateBuffer();
-			} else {
-				$template = $document->get('_template');
-			}
-
-			if($FB) $FB->info($template,'$template');
-
 			preg_match_all('#(<\s*body[^>]*>)(.*?)(<\s*/\s*body>)#siU', $template, $_template, PREG_SET_ORDER);
 			if($FB) $FB->warn($_template, '$_template');
 
@@ -184,8 +197,25 @@ class plgSystemJTAnimsition extends JPlugin
 		}
 		else
 		{
+			if(!empty($positions))
+			{
+				if($FB) $FB->info($positions,'$positions');
+				foreach($positions as $match)
+				{
+					$search = '#'.$match.'#siU';
+					$replace = $openAnimTag.$match.$closeAnimTag;
+					$template = preg_replace($search, $replace, $template);
+					if($FB) $FB->info($template,'$template');
+
+					if(version_compare(JVERSION, '3.0', 'ge')){
+						$document->setTemplateBuffer($template);
+					} else {
+						$document->set('_template', $template);
+					}
+				}
+			}
+
 			$buffer = $openAnimTag.$document->getBuffer('component').$closeAnimTag;
-			if($FB) $FB->warn($buffer, '$buffer');
 			$document->setBuffer($buffer, 'component');
 		}
 
@@ -198,6 +228,42 @@ class plgSystemJTAnimsition extends JPlugin
 
 
 		if($FB) $FB->groupEnd();
+	}
+
+	protected function _getAnimAttributes()
+	{
+		$activeLinkId = 'item['.JFactory::getApplication()->getMenu()->getActive()->id.']';
+		$paramsSet = $this->paramsSet[$activeLinkId];
+
+		if(!JFactory::getApplication()->isSite()
+			|| empty($paramsSet)
+			|| !is_array($paramsSet)) return;
+
+		$FB = $this->FB;
+		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
+
+		if($FB) $FB->info($activeLinkId,'$activeLinkId');
+		if($FB) $FB->info($paramsSet,'$paramsSet');
+
+		$dataAnimsitionIn = $paramsSet['in'] ? ' data-animsition-in="'.$paramsSet['in']['type'].'" data-animsition-in-duration="'.$paramsSet['in']['dur'].'"' : '';
+		$dataAnimsitionOut = $paramsSet['out'] ? ' data-animsition-out="'.$paramsSet['out']['type'].'" data-animsition-out-duration="'.$paramsSet['out']['dur'].'"' : '';
+
+		if($FB) $FB->info($this,'$this');
+
+		if(substr($paramsSet['in']['type'], 0, 7) == 'overlay'
+			|| substr($paramsSet['out']['type'], 0, 7) == 'overlay')
+		{
+			$animOverlay = ' data-animsition-overlay="true"';
+		}
+		else {
+			$animOverlay = '';
+		}
+
+		$animAttributes = ' class="animsition"'.$animOverlay.$dataAnimsitionIn.$dataAnimsitionOut;
+
+		if($FB) $FB->groupEnd();
+
+		return $animAttributes;
 	}
 
 	protected function _setParams($global, $menu)
