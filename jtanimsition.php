@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.2
+ * @version 1.0.3
  * @package JT - Animsition
  * @copyright 2014 Guido De Gobbis - JoomTools
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -37,11 +37,6 @@ class plgSystemJTAnimsition extends JPlugin
 
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
 		if($FB) $FB->info($this->params,'$this->params');
-
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
-		if($FB) $FB->info($document,'$document');
-		if($FB) $FB->info($app,'$app');
 
 		$globalParams['in']['active'] = $this->params->get('anim_active_in');
 		$globalParams['in']['type'] = $this->params->get('anim_type_in');
@@ -108,18 +103,23 @@ class plgSystemJTAnimsition extends JPlugin
 	public function onContentPrepareForm($form, $data)
 	{
 		$FB = $this->FB;
-		$skipMenus = array('alias', 'heading', 'url', 'separator');
-
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
 
+		$skipMenus = array('alias', 'heading', 'url', 'separator');
+
 		if($FB) $FB->info($form, '$form');
-		if(is_array($data)) {
+
+		if(is_array($data))
+		{
 			if($FB) $FB->info($data['type'], '$data[type]');
 			$skipMenu = in_array($data['type'], $skipMenus);
 			if($FB) $FB->info($skipMenu, '$skipMenu');
-		} else {
+		}
+		else
+		{
 			if($FB) $FB->info($data, '$data');
 		}
+
 		if($FB) $FB->info($form->getName(), '$form->getName()');
 
 		if ($form->getName() == 'com_menus.item' && !$skipMenu)
@@ -127,20 +127,23 @@ class plgSystemJTAnimsition extends JPlugin
 			JForm::addFormPath(__DIR__ . '/params');
 			$form->loadFile('jtanimsition', true);
 		}
+
 		if($FB) $FB->groupEnd();
 	}
 
 	public function onBeforeRender()
 	{
+		if(!JFactory::getApplication()->isSite()) return;
+
 		$activeLinkId = 'item['.JFactory::getApplication()->getMenu()->getActive()->id.']';
 		$paramsSet = $this->paramsSet[$activeLinkId];
 
-		if(!JFactory::getApplication()->isSite()
-			|| empty($paramsSet)
-			|| !is_array($paramsSet)) return;
+		if(empty($paramsSet) || !is_array($paramsSet)) return;
 
 		$FB = $this->FB;
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
+
+		if($FB) $FB->info($activeLinkId,'$activeLinkId');
 
 		$document = JFactory::getDocument();
 		if($FB) $FB->info($document,'$document');
@@ -150,7 +153,6 @@ class plgSystemJTAnimsition extends JPlugin
 		$plgType = $this->get('_type');
 		$pathToLibs = $liveSite.'/plugins/'.$plgType.'/'.$plgName.'/assets';
 
-		if($FB) $FB->info($this,'$this');
 		if($FB) $FB->info($pathToLibs,'$pathToLibs');
 
 		$animAttributes = $this->_getAnimAttributes();
