@@ -179,7 +179,7 @@ class plgSystemJTAnimsition extends JPlugin
 		}
 
 
-		if($paramsSet['container'] == 1)
+		if($this->paramsSet['container'] == 1)
 		{
 			preg_match_all('#(<\s*body[^>]*>)(.*?)(<\s*/\s*body>)#siU', $template, $_template, PREG_SET_ORDER);
 			if($FB) $FB->warn($_template, '$_template');
