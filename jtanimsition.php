@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.3
+ * @version 1.0.4
  * @package JT - Animsition
  * @copyright 2014 Guido De Gobbis - JoomTools
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -102,12 +102,14 @@ class plgSystemJTAnimsition extends JPlugin
 
 	public function onContentPrepareForm($form, $data)
 	{
+		if($form->getName() != 'com_menus.item') return;
 		$FB = $this->FB;
 		if($FB) $FB->group('JT - Animsition -> '.__FUNCTION__);
 
 		$skipMenus = array('alias', 'heading', 'url', 'separator');
 
 		if($FB) $FB->info($form, '$form');
+		if($FB) $FB->info($data, '$data');
 
 		if(is_array($data))
 		{
