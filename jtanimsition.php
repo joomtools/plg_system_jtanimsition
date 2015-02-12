@@ -53,7 +53,7 @@ class plgSystemJTAnimsition extends JPlugin
 		$globalParams['out']['dur'] = $this->params->get('anim_dur_out');
 			if($FB) $FB->info($globalParams,'$globalParams');
 
-		$menuItems = &JFactory::getApplication()->getMenu()->getItems('access', '1');
+		$menuItems = JFactory::getApplication()->getMenu()->getItems('access', '1');
 
 		if($FB) $FB->info($menuItems,'$menuItems');
 
