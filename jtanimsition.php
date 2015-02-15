@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.4
+ * @version 1.0.6
  * @package JT - Animsition
  * @copyright 2014 Guido De Gobbis - JoomTools
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -170,7 +170,7 @@ class plgSystemJTAnimsition extends JPlugin
 
 		$positions = null;
 
-		if (preg_match_all('#<jdoc:include\stype="modules"\sname="([^"]+)"(.*)?\s?\/>#iU', $template, $matches))
+		if (preg_match_all('#<jdoc:include\stype="modules"\sname="([^"]+)"(.*)?\s?\/>#iU', $template, $matches) && $this->paramsSet['positions'])
 		{
 			if($FB) $FB->info($matches,'$matches');
 			foreach($matches[1] as $key=>$match)
