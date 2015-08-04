@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
     <authorEmail>guido.de.gobbis@joomtools.de</authorEmail>
     <authorUrl>www.joomtools.de</authorUrl>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <description>PLG_SYSTEM_JTANIMSITION_XML_DESCRIPTION</description>
     <files>
         <file plugin="jtanimsition">jtanimsition.php</file>

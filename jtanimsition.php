@@ -226,9 +226,14 @@ class plgSystemJTAnimsition extends JPlugin
 
 		JHtml::_('jquery.framework');
 		$document->addScript($pathToLibs.'/jquery.animsition.min.js');
-		$script = 'jQuery(document).ready(function($){$(".animsition").animsition();});';
+		$script = '
+		jQuery(document).ready(function($){
+		    var cssLink = $(\'<link rel="stylesheet" type="text/css" href="'.$pathToLibs.'/animsition.min.css">\');
+		    $("head").append(cssLink);
+		    $(".animsition").animsition();
+        });';
 		$document->addScriptDeclaration($script);
-		$document->addStyleSheet($pathToLibs.'/animsition.min.css');
+//		$document->addStyleSheet($pathToLibs.'/animsition.min.css');
 
 
 		if($FB) $FB->groupEnd();
