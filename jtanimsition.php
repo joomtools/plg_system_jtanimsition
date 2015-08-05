@@ -46,7 +46,7 @@ class plgSystemJTAnimsition extends JPlugin
         if ($this->params->get('anim_container', 1) == 2)
         {
             $animPositions                = (array) json_decode($this->params->get('anim_pos_repeatable', ''));
-            $this->paramsSet['positions'] = (!$animPositions && !empty($animPositions['anim_position'])) ? (array) $animPositions['anim_position'] : null;
+            $this->paramsSet['positions'] = ($animPositions && !empty($animPositions['anim_position'])) ? (array) $animPositions['anim_position'] : null;
         }
 
         if ($FB) $FB->info($this->paramsSet['positions'], '$this->paramsSet[positions]');
