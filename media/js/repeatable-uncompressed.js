@@ -168,6 +168,7 @@
             // bind add button
             self.$container.on('click', self.options.btAdd, function (e) {
                 e.preventDefault();
+
                 var after = $(this).parents(self.options.repeatableElement);
                 if(!after.length){
                     after = null;
@@ -298,6 +299,12 @@
                 return null;
             }
 
+            var preElm = $(after).children('td').children('div')[0];
+            if($(preElm).children('input[type="text"]').attr('id') !== undefined) {
+                var preId = $(preElm).children('input[type="text"]').attr('id');
+                count = parseInt(preId.split('-')[1]);
+            }
+
             // make new from template
             var row = $.parseHTML(self.template);
 
@@ -365,6 +372,7 @@
             self.$input.trigger('row-remove', row);
 
             $(row).remove();
+
         };
 
         //fix names ind id`s for field that in $row
@@ -490,6 +498,8 @@
                 var $el = $(this),
                     inputId = $el.siblings('input[type="text"]').attr('id'),
                     repId = inputId.split('-');
+
+                //console.log($el);
                 $el.on('click', function(){
                     setRepeatableId(repId[1]);
                 });

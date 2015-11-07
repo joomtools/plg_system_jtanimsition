@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
     <authorEmail>guido.de.gobbis@joomtools.de</authorEmail>
     <authorUrl>www.joomtools.de</authorUrl>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <description>PLG_SYSTEM_JTANIMSITION_XML_DESCRIPTION</description>
     <files>
         <file plugin="jtanimsition">jtanimsition.php</file>
@@ -47,7 +47,7 @@
                 </field>
 
                 <field name="anim_pos_repeatable"
-                       type="Repeatable"
+                       type="repeatable"
                        showon="anim_container:2"
                        icon="list"
                        default="{'anim_position':[]}"
@@ -58,7 +58,8 @@
 
                         <fieldset hidden="true" name="anim_pos_repeatable_modal" repeat="true">
 
-                            <field name="anim_position" type="repeatablemoduleposition"
+                            <field name="anim_position"
+                                   type="repeatablemoduleposition"
                                    label="PLG_SYSTEM_JTANIMSITION_POSITION_LABEL"
                                    description="PLG_SYSTEM_JTANIMSITION_POSITION_DESC"
                                    default=""
