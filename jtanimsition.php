@@ -307,7 +307,7 @@ class PlgSystemJtAnimsition extends JPlugin
 		{
 			preg_match('#(<body[^>]*>)(.*?)(<\/body>)#siU', $tmplBuffer, $tmpl);
 
-			$buffer     = $tmpl[0][1] . $openAnimTag . $tmpl[0][2] . $closeAnimTag . $tmpl[0][3];
+			$buffer     = $tmpl[1] . $openAnimTag . $tmpl[2] . $closeAnimTag . $tmpl[3];
 			$tmplBuffer = preg_replace('#(<body[^>]*>)(.*?)(</\body>)#siU', $buffer, $tmplBuffer);
 
 			$document->setTemplateBuffer($tmplBuffer);
@@ -334,16 +334,18 @@ class PlgSystemJtAnimsition extends JPlugin
 		$document->addScript($pathToLibs . '/jquery.animsition.min.js');
 
 		$script = '
-		jQuery(document).ready(function($){
-		    var cssLink = $(\'<link rel="stylesheet" type="text/css" href="'
-				. $pathToLibs
-				. '/animsition.min.css">\');
-		    $("head").append(cssLink);
-		    $(".animsition").animsition({
-		        inDuration  : 0,
-		        outDuration : 0
-		    });
-        });';
+			var cssLink = document.createElement("link");
+			cssLink.rel = "stylesheet" ;
+			cssLink.type = "text/css";
+			cssLink.href = "' . $pathToLibs . '/animsition.min.css";
+			document.getElementsByTagName("head")[0].appendChild(cssLink);
+			jQuery(document).ready(function($){
+				$(".animsition").animsition({
+					inDuration  : 0,
+					outDuration : 0
+				});
+			});
+		';
 
 		$document->addScriptDeclaration($script);
 	}
