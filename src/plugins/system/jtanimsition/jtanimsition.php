@@ -3,14 +3,23 @@
  * Using blivesta/animsition libraries for pageload animation on Joomla! 3.
  *
  * @package     Joomla.Plugin
- * @subpackage  System.jtanimsition
- * @author      Guido De Gobbis <guido.de.gobbis@joomtools.de>
- * @copyright   2014 JoomTools
- * @license     GNU/GPLv3 <http://www.gnu.org/licenses/gpl-3.0.de.html>
- * @link        http://joomtools.de
+ * @subpackage  System.Jtanimsition
+ *
+ * @author      Guido De Gobbis <support@joomtools.de>
+ * @copyright   Copyright 2020 JoomTools.de - All rights reserved.
+ * @license     GNU General Public License version 2 or later
  */
 
 defined('_JEXEC') or die;
+
+JLoader::register('JDocumentHTML', JPATH_PLUGINS . '/system/jtanimsition/assets/html.php');
+JLoader::registerNamespace('\\Joomla\\CMS\\Document\\HtmlDocument', JPATH_PLUGINS . '/system/jtanimsition/assets/html.php', true);
+JLoader::registerNamespace('\\Joomla\\CMS\\Document\\HtmlDocument', JPATH_PLUGINS . '/system/jtanimsition/assets/html.php', true, false, 'psr4');
+
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Class PlgSystemJtAnimsition
@@ -19,38 +28,41 @@ defined('_JEXEC') or die;
  *
  * @package     Joomla.Plugin
  * @subpackage  System.jtanimsition
- * @since       3
+ *
+ * @since  3.0.0
  */
 class PlgSystemJtAnimsition extends JPlugin
 {
-	protected $pSet = array();
-
-	protected $autoloadLanguage = true;
+	/**
+	 * Global application object
+	 *
+	 * @var   CMSApplication
+	 *
+	 * @since  3.0.0
+	 */
+	protected $app;
 
 	/**
-	 * Constructor.
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param   object  &$subject  The object to observe.
-	 * @param   array   $config    An optional associative array of configuration settings.
+	 * @var   boolean
 	 *
-	 * @since   1.5
+	 * @since  3.0.0
 	 */
-	public function __construct(&$subject, $config)
-	{
-		// Class overwrites
-		JLoader::register('JDocumentHTML', JPATH_ROOT . '/media/jtlibraries/html.php');
+	protected $autoloadLanguage = true;
 
-		parent::__construct($subject, $config);
-	}
+	protected $pSet = array();
 
 	/**
 	 * onAfterInitialise
 	 *
 	 * @return  void
+	 *
+	 * @since  3.0.0
 	 */
 	public function onAfterInitialise()
 	{
-		if (JFactory::getApplication()->isAdmin())
+		if ($this->app->isClient('administrator'))
 		{
 			return;
 		}
@@ -71,17 +83,17 @@ class PlgSystemJtAnimsition extends JPlugin
 	 * onAfterRoute
 	 *
 	 * @return  void
+	 *
+	 * @since  3.0.0
 	 */
 	public function onAfterRoute()
 	{
-		$app = JFactory::getApplication();
-
-		if ($app->isAdmin())
+		if ($this->app->isClient('administrator'))
 		{
 			return;
 		}
 
-		$menu       = $app->getMenu();
+		$menu       = $this->app->getMenu();
 		$menuItems  = $menu->getItems('access', '1');
 		$activeItem = $menu->getActive();
 
@@ -103,8 +115,8 @@ class PlgSystemJtAnimsition extends JPlugin
 		$iParams['out']['weight'] = $activeItem->params->get('menu_anim_weight_out', '-1');
 		$iParams['out']['dur']    = $activeItem->params->get('menu_anim_dur_out', '-1');
 
-		$setParams     = $this->_setParams($gParams, $iParams);
-		$setAnimsition = $this->_setAnimsition($setParams);
+		$setParams     = $this->setParams($gParams, $iParams);
+		$setAnimsition = $this->setAnimsition($setParams);
 
 		if ($setParams['out']['active'])
 		{
@@ -128,8 +140,10 @@ class PlgSystemJtAnimsition extends JPlugin
 	 * @param   array  $menu    menu item params
 	 *
 	 * @return array|void
+	 *
+	 * @since  3.0.0
 	 */
-	protected function _setParams($global, $menu)
+	private function setParams($global, $menu)
 	{
 		if (!is_array($global) || !is_array($menu))
 		{
@@ -164,8 +178,10 @@ class PlgSystemJtAnimsition extends JPlugin
 	 * @param   array  $params  Merged params @see _setParams()
 	 *
 	 * @return array|void
+	 *
+	 * @since  3.0.0
 	 */
-	protected function _setAnimsition($params)
+	private function setAnimsition($params)
 	{
 		if (!is_array($params))
 		{
@@ -231,10 +247,12 @@ class PlgSystemJtAnimsition extends JPlugin
 	 * @param   mixed  $data  The associated data for the form.
 	 *
 	 * @return  void
+	 *
+	 * @since  3.0.0
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		if (JFactory::getApplication()->isSite() || $form->getName() != 'com_menus.item')
+		if ($this->app->isClient('site') || $form->getName() != 'com_menus.item')
 		{
 			return;
 		}
@@ -258,17 +276,17 @@ class PlgSystemJtAnimsition extends JPlugin
 	 * onBeforeRender
 	 *
 	 * @return void
+	 *
+	 * @since  3.0.0
 	 */
 	public function onBeforeRender()
 	{
-		$app = JFactory::getApplication();
-
-		if ($app->isAdmin())
+		if ($this->app->isClient('administrator'))
 		{
 			return;
 		}
 
-		$actLinkId = 'item[' . $app->getMenu()->getActive()->id . ']';
+		$actLinkId = 'item[' . $this->app->getMenu()->getActive()->id . ']';
 		$pSet      = isset($this->pSet[$actLinkId]) ? $this->pSet[$actLinkId] : null;
 
 		if (empty($pSet) || !is_array($pSet))
@@ -276,11 +294,11 @@ class PlgSystemJtAnimsition extends JPlugin
 			return;
 		}
 
-		$document       = JFactory::getDocument();
-		$animAttributes = $this->_getAnimAttributes();
+		$document       = Factory::getDocument();
+		$animAttributes = $this->getAnimAttributes();
 		$openAnimTag    = '<div' . $animAttributes . '>';
 		$closeAnimTag   = '</div>';
-		$liveSite       = rtrim(JURI::base(true), '/');
+		$liveSite       = rtrim(URI::base(true), '/');
 		$plgName        = $this->get('_name');
 		$plgType        = $this->get('_type');
 		$pathToLibs     = $liveSite . '/plugins/' . $plgType . '/' . $plgName . '/assets';
@@ -308,7 +326,7 @@ class PlgSystemJtAnimsition extends JPlugin
 			preg_match('#(<body[^>]*>)(.*?)(<\/body>)#siU', $tmplBuffer, $tmpl);
 
 			$buffer     = $tmpl[1] . $openAnimTag . $tmpl[2] . $closeAnimTag . $tmpl[3];
-			$tmplBuffer = preg_replace('#(<body[^>]*>)(.*?)(</\body>)#siU', $buffer, $tmplBuffer);
+			$tmplBuffer = preg_replace('#(<body[^>]*>)(.*?)(<\/body>)#siU', $buffer, $tmplBuffer);
 
 			$document->setTemplateBuffer($tmplBuffer);
 		}
@@ -330,9 +348,20 @@ class PlgSystemJtAnimsition extends JPlugin
 			$document->setBuffer($buffer, 'component');
 		}
 
-		JHtml::_('jquery.framework');
-		$document->addScript($pathToLibs . '/jquery.animsition.min.js');
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('script', 'plg_system_jtanimsition/jquery.animsition.min.js', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('stylesheet', 'plg_system_jtanimsition/animsition.min.css', array('version' => 'auto', 'relative' => true));
+//		$document->addScript($pathToLibs . '/jquery.animsition.min.js');
 
+		$script = '
+			jQuery(document).ready(function($){
+				$(".animsition").animsition({
+					inDuration  : 0,
+					outDuration : 0
+				});
+			});
+		';
+/*
 		$script = '
 			var cssLink = document.createElement("link");
 			cssLink.rel = "stylesheet" ;
@@ -346,23 +375,24 @@ class PlgSystemJtAnimsition extends JPlugin
 				});
 			});
 		';
+*/
 
 		$document->addScriptDeclaration($script);
 	}
 
 	/**
-	 * _getAnimAttributes
 	 * Get attributes for animsition container
 	 *
 	 * @return string|void
+	 *
+	 * @since  3.0.0
 	 */
-	protected function _getAnimAttributes()
+	private function getAnimAttributes()
 	{
-		$app       = JFactory::getApplication();
-		$actLinkId = 'item[' . $app->getMenu()->getActive()->id . ']';
+		$actLinkId = 'item[' . $this->app->getMenu()->getActive()->id . ']';
 		$pSet      = isset($this->pSet[$actLinkId]) ? $this->pSet[$actLinkId] : null;
 
-		if ($app->isAdmin() || empty($pSet) || !is_array($pSet))
+		if ($this->app->isClient('administrator') || empty($pSet) || !is_array($pSet))
 		{
 			return null;
 		}
@@ -373,7 +403,7 @@ class PlgSystemJtAnimsition extends JPlugin
 
 		if (isset($pSet['in']))
 		{
-			$dataAnimsitionIn = ' data-animsition-in="'
+			$dataAnimsitionIn = ' data-animsition-in-class="'
 					. $pSet['in']['type']
 					. '" data-animsition-in-duration="'
 					. $pSet['in']['dur'] . '"';
@@ -385,7 +415,7 @@ class PlgSystemJtAnimsition extends JPlugin
 
 		if (isset($pSet['out']))
 		{
-			$dataAnimsitionOut = ' data-animsition-out="'
+			$dataAnimsitionOut = ' data-animsition-out-class="'
 					. $pSet['out']['type']
 					. '" data-animsition-out-duration="'
 					. $pSet['out']['dur']
