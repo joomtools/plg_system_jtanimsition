@@ -2,7 +2,7 @@
 <extension version="3.9" type="plugin" group="system" method="update">
 	<name>PLG_SYSTEM_JTANIMSITION</name>
 	<author>Guido De Gobbis</author>
-	<creationDate>23.12.2020</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<copyright>(C) JoomTools.de. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>support@joomtools.de</authorEmail>
